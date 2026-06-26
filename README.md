@@ -4,22 +4,29 @@
 
 English word stemming for Standard ML. Implements two algorithms:
 
-- **Porter stemmer** — the classic 1980 algorithm; fast and widely used in IR systems.
-- **Snowball English** — an improved Porter2 variant with better handling of
-  irregular words.
+- **Porter stemmer** — the classic 1980 algorithm (steps 1a through 5b);
+  fast and widely used in IR systems. Output matches Porter's reference
+  vocabulary (e.g. `agreed` → `agre`, `relational` → `relat`).
+- **Snowball English** — a Porter2-style variant that additionally strips
+  apostrophe possessives (step 0) before applying the Porter pipeline, so
+  `dog's` and `dog` stem alike.
 
-Both functions are purely functional, allocation-free string-to-string maps.
+Both functions are purely functional, allocation-light string-to-string maps.
 
 ## API sketch
 
 ```sml
 Stemmer.porter "running"          (* "run" *)
-Stemmer.porter "generously"       (* "generous" *)
+Stemmer.porter "generously"       (* "gener" *)
 Stemmer.porter "happiness"        (* "happi" *)
+Stemmer.porter "agreed"           (* "agre" *)
+Stemmer.porter "relational"       (* "relat" *)
 
-Stemmer.snowballEnglish "running"      (* "run" *)
-Stemmer.snowballEnglish "generously"   (* "generous" *)
-Stemmer.snowballEnglish "happiness"    (* "happi" *)
+Stemmer.snowballEnglish "running" (* "run" *)
+Stemmer.snowballEnglish "dog's"   (* "dog" *)
+
+Stemmer.stem "cats"               (* "cat"; alias for porter *)
+Stemmer.stemAll ["cats","ponies"] (* ["cat","poni"] *)
 ```
 
 ## When to use which
