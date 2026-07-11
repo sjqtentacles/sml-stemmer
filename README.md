@@ -45,6 +45,29 @@ Stemmer.stemAll ["cats","ponies"] (* ["cat","poni"] *)
 - Very short words (≤ 2 characters) are returned unchanged.
 - Proper nouns and acronyms may be incorrectly truncated.
 
+## Example
+
+`make example` builds and runs [`examples/demo.sml`](examples/demo.sml), which
+prints `porter` vs `snowballEnglish` side by side for a handful of words
+spanning different suffix classes (`dog's` shows the two diverge, since only
+Snowball strips the possessive), then batch-stems the same list with
+`stemAll` (output is byte-identical under MLton and Poly/ML):
+
+```
+Porter vs Snowball-English stemmer:
+
+  word        porter      snowballEnglish
+  running     run         run
+  flies       fli         fli
+  happiness   happi       happi
+  dog's       dog'        dog
+  caresses    caress      caress
+  agreed      agre        agre
+
+stemAll on the same word list:
+  [run, fli, happi, dog', caress, agre]
+```
+
 ## Installing with smlpkg
 
 ```sh
